@@ -7,27 +7,30 @@ import { config } from "../App";
 import Footer from "./Footer";
 import Header from "./Header";
 import "./Register.css";
-
-
+// CRIO_SOLUTION_AND_STUB_START_MODULE_LOGIN
+import { useHistory, Link } from "react-router-dom";
+// CRIO_SOLUTION_AND_STUB_END_MODULE_LOGIN
 
 const Register = () => {
   const { enqueueSnackbar } = useSnackbar();
-  
- 
+  // CRIO_SOLUTION_START_MODULE_LOGIN
+  const history = useHistory();
+  // CRIO_SOLUTION_END_MODULE_LOGIN
+  // CRIO_SOLUTION_START_MODULE_REGISTER
   const [formData, setFormData] = useState({
     username: "",
     password: "",
     confirmPassword: "",
   });
   const [loading, setLoading] = useState(false);
+  // CRIO_SOLUTION_END_MODULE_REGISTER
 
-
- 
+  // CRIO_SOLUTION_START_MODULE_REGISTER
   const handleInput = (e) => {
     const [key, value] = [e.target.name, e.target.value];
     setFormData((nextFormData) => ({ ...nextFormData, [key]: value }));
   };
-  
+  // CRIO_SOLUTION_END_MODULE_REGISTER
 
   // TODO: CRIO_TASK_MODULE_REGISTER - Implement the register function
   /**
@@ -53,7 +56,8 @@ const Register = () => {
    * }
    */
   const register = async (formData) => {
-      if (!validateInput(formData)) return;
+    // CRIO_SOLUTION_START_MODULE_REGISTER
+    if (!validateInput(formData)) return;
     try {
       setLoading(true);
       await axios.post(`${config.endpoint}/auth/register`, {
@@ -67,7 +71,11 @@ const Register = () => {
         confirmPassword: "",
       });
       enqueueSnackbar("Registered Successfully", { variant: "success" });
-   
+      // CRIO_SOLUTION_END_MODULE_REGISTER
+      // CRIO_SOLUTION_START_MODULE_LOGIN
+      history.push("/login");
+      // CRIO_SOLUTION_END_MODULE_LOGIN
+      // CRIO_SOLUTION_START_MODULE_REGISTER
     } catch (e) {
       setLoading(false);
       if (e.response && e.response.status === 400) {
@@ -79,7 +87,8 @@ const Register = () => {
         );
       }
     }
-     };
+    // CRIO_SOLUTION_END_MODULE_REGISTER
+  };
 
   // TODO: CRIO_TASK_MODULE_REGISTER - Implement user input validation logic
   /**
@@ -100,7 +109,8 @@ const Register = () => {
    * -    Check that confirmPassword field has the same value as password field - Passwords do not match
    */
   const validateInput = (data) => {
-       if (!data.username) {
+    // CRIO_SOLUTION_START_MODULE_REGISTER
+    if (!data.username) {
       enqueueSnackbar("Username is a required field", { variant: "warning" });
       return false;
     }
@@ -125,7 +135,8 @@ const Register = () => {
       return false;
     }
     return true;
-   };
+    // CRIO_SOLUTION_END_MODULE_REGISTER
+  };
 
   return (
     <Box
@@ -146,9 +157,11 @@ const Register = () => {
             name="username"
             placeholder="Enter Username"
             fullWidth
-                       value={formData.username}
+            // CRIO_SOLUTION_START_MODULE_REGISTER
+            value={formData.username}
             onChange={handleInput}
-                    />
+            // CRIO_SOLUTION_END_MODULE_REGISTER
+          />
           <TextField
             id="password"
             variant="outlined"
@@ -158,9 +171,11 @@ const Register = () => {
             helperText="Password must be atleast 6 characters length"
             fullWidth
             placeholder="Enter a password with minimum 6 characters"
-                       value={formData.password}
+            // CRIO_SOLUTION_START_MODULE_REGISTER
+            value={formData.password}
             onChange={handleInput}
-                    />
+            // CRIO_SOLUTION_END_MODULE_REGISTER
+          />
           <TextField
             id="confirmPassword"
             variant="outlined"
@@ -168,11 +183,18 @@ const Register = () => {
             name="confirmPassword"
             type="password"
             fullWidth
-                      placeholder="Re-enter your password to confirm"
+            // CRIO_SOLUTION_START_MODULE_REGISTER
+            placeholder="Re-enter your password to confirm"
             value={formData.confirmPassword}
             onChange={handleInput}
-                   />
-         
+            // CRIO_SOLUTION_END_MODULE_REGISTER
+          />
+          {/* CRIO_UNCOMMENT_START_MODULE_REGISTER
+          // <Button className="button" variant="contained">
+          //  Register Now
+          // </Button>
+          {/* CRIO_UNCOMMENT_END_MODULE_REGISTER */}
+          {/* CRIO_SOLUTION_START_MODULE_REGISTER */}
           {loading ? (
             <Box display="flex" justifyContent="center" alignItems="center">
               <CircularProgress size={25} color="primary" />
@@ -186,13 +208,17 @@ const Register = () => {
               Register Now
             </Button>
           )}
-        
+          {/* CRIO_SOLUTION_END_MODULE_REGISTER */}
           <p className="secondary-action">
             Already have an account?{" "}
-            <a className="link" href="#">
-             Login here
-            </a>
-           
+            {/* CRIO_UNCOMMENT_START_MODULE_REGISTER
+            // <a className="link" href="#">
+            //  Login here
+            // </a>
+            {/* CRIO_UNCOMMENT_END_MODULE_REGISTER */}
+            {/* CRIO_SOLUTION_START_MODULE_REGISTER */}
+            <Link className="link" to="/login">Login here</Link>
+            {/* CRIO_SOLUTION_END_MODULE_REGISTER */}
           </p>
         </Stack>
       </Box>
