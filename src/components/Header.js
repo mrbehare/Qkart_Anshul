@@ -31,37 +31,36 @@ const Header = ({ children, hasHiddenAuthButtons }) => {
     window.location.reload();
   };
 
-  // CRIO_SOLUTION_END_MODULE_LOGIN
-  // CRIO_SOLUTION_START_MODULE_LOGIN
+  
   if (hasHiddenAuthButtons) {
-    // CRIO_SOLUTION_END_MODULE_LOGIN
+   
     return (
       <Box className="header">
         <Box className="header-title">
-          {/* CRIO_SOLUTION_START_MODULE_LOGIN */}
+      
           <Link to="/">
-            {/* CRIO_SOLUTION_END_MODULE_LOGIN */}
+      
             <img src="logo_light.svg" alt="QKart-icon"></img>
-            {/* CRIO_SOLUTION_START_MODULE_LOGIN */}
+         
           </Link>
-          {/* CRIO_SOLUTION_END_MODULE_LOGIN */}
+     
         </Box>
-        {/* CRIO_SOLUTION_START_MODULE_PRODUCTS */}
+       
         {children}
-        {/* CRIO_SOLUTION_END_MODULE_PRODUCTS */}
+       
         <Button
           className="explore-button"
           startIcon={<ArrowBackIcon />}
           variant="text"
-          // CRIO_SOLUTION_START_MODULE_LOGIN
+         
           onClick={routeToExplore}
-          // CRIO_SOLUTION_END_MODULE_LOGIN
+          
         >
           Back to explore
         </Button>
       </Box>
     );
-    // CRIO_SOLUTION_START_MODULE_LOGIN
+ 
   }
 
   return (
@@ -99,7 +98,7 @@ const Header = ({ children, hasHiddenAuthButtons }) => {
       </Stack>
     </Box>
   );
-  // CRIO_SOLUTION_END_MODULE_LOGIN
+ 
 };
 
 export default Header;
