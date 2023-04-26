@@ -251,8 +251,9 @@ const Products = () => {
             </Grid>
           )}
        </Grid>
-      <Footer />
+      
       </Grid>
+      <Footer />
     </div>
   );
 };
