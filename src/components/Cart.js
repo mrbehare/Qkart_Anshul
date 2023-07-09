@@ -48,6 +48,7 @@ import "./Cart.css";
  *
  */
 export const generateCartItemsFrom = (cartData, productsData) => {
+  // FIXME - Add unit tests for each of these pure functions
   if (!cartData) return;
 
   const nextCart = cartData.map((item) => ({
@@ -76,7 +77,25 @@ export const getTotalCartValue = (items = []) => {
   return total;
 };
 
+// TODO: CRIO_TASK_MODULE_CHECKOUT - Implement function to return total cart quantity
+/**
+ * Return the sum of quantities of all products added to the cart
+ *
+ * @param { Array.<CartItem> } items
+ *    Array of objects with complete data on products in cart
+ *
+ * @returns { Number }
+ *    Total quantity of products added to the cart
+ *
+ */
+export const getTotalItems = (items = []) => {
 
+  if (!items.length) return 0;
+  const total = items.map((item) => item.qty).reduce((total, n) => total + n);
+  return total;
+};
+
+// TODO: CRIO_TASK_MODULE_CHECKOUT - Add static quantity view for Checkout page cart
 /**
  * Component to display the current quantity for a product and + and - buttons to update product quantity on cart
  * 
@@ -89,14 +108,22 @@ export const getTotalCartValue = (items = []) => {
  * @param {Function} handleDelete
  *    Handler function which reduces the quantity of a product in cart by 1
  * 
+
+ * @param {Boolean} isReadOnly
+ *    If product quantity on cart is to be displayed as read only without the + - options to change quantity
+
  * 
  */
- const ItemQuantity = ({
+const ItemQuantity = ({
   value,
   handleAdd,
   handleDelete,
+  isReadOnly,
 }) => {
-   return (
+  if (isReadOnly) {
+    return <Box>Qty: {value}</Box>;
+  }
+  return (
     <Stack direction="row" alignItems="center">
       <IconButton size="small" color="primary" onClick={handleDelete}>
         <RemoveOutlined />
@@ -111,8 +138,6 @@ export const getTotalCartValue = (items = []) => {
   );
 };
 
-
-
 /**
  * Component to display the Cart view
  * 
@@ -125,6 +150,9 @@ export const getTotalCartValue = (items = []) => {
  * @param {Function} handleDelete
  *    Current quantity of product in cart
  * 
+// CRIO_SOLUTION_AND_STUB_START_MODULE_CHECKOUT
+ * @param {Boolean} isReadOnly
+ *    If product quantity on cart is to be displayed as read only without the + - options to change quantity
  * 
  */
 const Cart = ({
@@ -132,8 +160,8 @@ const Cart = ({
   items = [],
   handleQuantity,
   hasCheckoutButton = false,
+  isReadOnly = false,
 }) => {
- 
   const token = localStorage.getItem("token");
   const history = useHistory();
 
@@ -156,7 +184,7 @@ const Cart = ({
     <>
       <Box className="cart">
         {/* TODO: CRIO_TASK_MODULE_CART - Display view for each cart item with non-zero quantity */}
-               {items.map((item) => (
+        {items.map((item) => (
           <Box key={item.productId}>
             {item.qty > 0 ? (
               <Box display="flex" alignItems="flex-start" padding="1rem">
@@ -203,7 +231,8 @@ const Cart = ({
                         );
                       }}
                       value={item.qty}
-                                     />
+                                           isReadOnly={isReadOnly}
+                                       />
                     <Box padding="0.5rem" fontWeight="700">
                       ${item.cost}
                     </Box>
@@ -213,7 +242,8 @@ const Cart = ({
             ) : null}
           </Box>
         ))}
-          <Box
+       
+        <Box
           padding="1rem"
           display="flex"
           justifyContent="space-between"
@@ -232,8 +262,6 @@ const Cart = ({
             ${getTotalCartValue(items)}
           </Box>
         </Box>
-
-
         {hasCheckoutButton && (
           <Box display="flex" justifyContent="flex-end" className="cart-footer">
             <Button
@@ -247,9 +275,28 @@ const Cart = ({
             </Button>
           </Box>
         )}
-      
       </Box>
-
+        {isReadOnly && (
+        <Box className="cart" padding="1rem">
+          <h2>Order Details</h2>
+          <Box className="cart-row">
+            <p>Products</p>
+            <p>{getTotalItems(items)}</p>
+          </Box>
+          <Box className="cart-row">
+            <p>Subtotal</p>
+            <p>${getTotalCartValue(items)}</p>
+          </Box>
+          <Box className="cart-row">
+            <p>Shipping Charges</p>
+            <p>$0</p>
+          </Box>
+          <Box className="cart-row" fontSize="1.25rem" fontWeight="700">
+            <p>Total</p>
+            <p>${getTotalCartValue(items)}</p>
+          </Box>
+        </Box>
+      )}
     </>
   );
 };
