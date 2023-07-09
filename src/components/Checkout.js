@@ -604,7 +604,7 @@ const Checkout = () => {
             <Button
               startIcon={<CreditCard />}
               variant="contained"
-                       disabled={disabled}
+                       
               onClick={async () => {
                 await performCheckout(token, items, addresses)
               }}
