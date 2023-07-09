@@ -545,7 +545,7 @@ const Products = () => {
       )}
        <Footer />
     </div>
-  )
-}
+  );
+};
 
 export default Products;
