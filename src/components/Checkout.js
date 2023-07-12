@@ -126,6 +126,7 @@ const AddNewAddressView = ({
   );
 };
 const Checkout = () => {
+  // eslint-disable-next-line
   const location = useLocation();
 
   // console.log(location.state.items);
@@ -133,6 +134,7 @@ const Checkout = () => {
   const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
   const [items, setItems] = useState([]);
+  // eslint-disable-next-line
   const [disabled, setDisabled] = useState(true)
   const [products, setProducts] = useState([]);
   const [addresses, setAddresses] = useState({ all: [], selected: "" });
@@ -425,6 +427,7 @@ const Checkout = () => {
     if (validateRequest(items, addresses)) {
       try {
         const url = `${config.endpoint}/cart/checkout`;
+        // eslint-disable-next-line
         const res = await axios.post(
           url,
           { addressId: addresses.selected },
